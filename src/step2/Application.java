@@ -4,6 +4,10 @@ import step2.biz.Groq;
 import step2.biz.LLM;
 import step2.data.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Application {
     public static void main(String[] args) {
         LLM llm = new Groq();
@@ -53,6 +57,14 @@ public class Application {
                         "AWS에서 가장 중요한 것들"
                         ));
         System.out.println(reasoningResult.thinking());
-        System.out.println(reasoningResult.content());
+//        System.out.println(reasoningResult.content());
+        try {
+            Path filename = Paths.get("%s.md".formatted(System.currentTimeMillis()));
+            Files.writeString(
+                    filename,
+                    reasoningResult.content().replace("\\n", "\n"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
