@@ -41,7 +41,7 @@ public class Groq extends LLM {
                              }
                               ],
                              "model": "moonshotai/kimi-k2-instruct"
-                         }
+                     }
                      """.formatted(prompt)
                 )) // POST 요청을 넣기 위해선 'body'
                 .build();
