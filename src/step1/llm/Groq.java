@@ -62,15 +62,30 @@ public class Groq extends LLM {
 //        return body;
     }
 
+    final private String groqChatURL = "https://api.groq.com/openai/v1/chat/completions";
+
     @Override
     public String generateText(String prompt) {
-        String url = "https://api.groq.com/openai/v1/chat/completions";
-
         // -> body(POST)를 추출
         String result = useGroq(
-                url,
+                groqChatURL,
                 prompt,
                 "moonshotai/kimi-k2-instruct")
+                // 정규표현식...
+                // "content":
+                // "},
+                .split("\"content\":\"")[1]
+                .split("\"}")[0]
+                .trim(); // 추출...
+        return result;
+    }
+
+    @Override
+    public String generateText(String prompt, String model) {
+        String result = useGroq(
+                groqChatURL,
+                prompt,
+                model)
                 // 정규표현식...
                 // "content":
                 // "},
