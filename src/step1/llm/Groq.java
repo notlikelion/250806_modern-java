@@ -61,7 +61,13 @@ public class Groq extends LLM {
             throw new RuntimeException(e);
         }
         // -> body(POST)를 추출
-        String result = body; // 추출...
+        String result = body
+                // 정규표현식...
+                // "content":
+                // "},
+                .split("\"content\":\"")[1]
+                .split("\"}")[0]
+                .trim(); // 추출...
         return result;
     }
 
