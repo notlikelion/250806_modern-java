@@ -4,6 +4,10 @@ package step1;
 import step1.llm.Groq;
 import step1.llm.LLM;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 public class Application {
@@ -33,6 +37,15 @@ public class Application {
 
         String prompt2 = "Hello World!";
         String result2 = llm.changeTextToSpeech(prompt2);
+        try {
+            byte[] audio = result2.getBytes();
+            Path filename = Paths.get("%s.wav".formatted(System.currentTimeMillis()));
+            Files.write(
+                    filename,
+                    audio);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(result2);
         String prompt3 = "클라우드 엔지니어가 되는 방법을 상세히 알려줘";
         String result3 = llm.useReasoning(prompt3);
