@@ -41,7 +41,9 @@ public class Gemini implements LLM {
 //            System.out.println(body);
             String result = body
                     .split("text\": \"")[1]
-                    .split("\"}")[0]
+                    .split("}")[0]
+                    .replace("\\n", "")
+                    .replace("\"", "")
                     .trim();
             return new TextGenerationResult(
                     result,
