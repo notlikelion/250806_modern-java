@@ -3,6 +3,7 @@ package step1.llm;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class Groq extends LLM {
     private final String GROQ_API_KEY;
@@ -46,8 +47,22 @@ public class Groq extends LLM {
                 )) // POST 요청을 넣기 위해선 'body'
                 .build();
         // response
+        String body = null; // 초기화를 안하면 뒤에서 쓰기 곤란.
+        try {
+            HttpResponse<String> response = client.send(
+                    request,
+                    HttpResponse.BodyHandlers.ofString()
+            );
+            // String body = response.body(); // block 때문에...
+            body = response.body();
+            // 1번 : 그냥 여기 안에서 body를 써서 return...
+            // 2번 : 이 친구를 처리한 다음...
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // -> body(POST)를 추출
-        return "";
+        String result = body; // 추출...
+        return result;
     }
 
     @Override
