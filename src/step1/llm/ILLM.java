@@ -6,7 +6,7 @@ public interface ILLM {
     // 오버로딩
     String generateText(String prompt, String model);
     /// Text to Speech : https://console.groq.com/docs/text-to-speech
-    String changeTextToSpeech(String prompt);
+    byte[] changeTextToSpeech(String prompt);
     ///  Reasoning : https://console.groq.com/docs/reasoning
     String useReasoning(String prompt);
 }

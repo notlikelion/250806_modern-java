@@ -36,17 +36,16 @@ public class Application {
                     .forEach(System.out::println);
 
         String prompt2 = "Hello World!";
-        String result2 = llm.changeTextToSpeech(prompt2);
+        byte[] result2 = llm.changeTextToSpeech(prompt2);
         try {
-            byte[] audio = result2.getBytes();
             Path filename = Paths.get("%s.wav".formatted(System.currentTimeMillis()));
             Files.write(
                     filename,
-                    audio);
+                    result2);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(result2);
+//        System.out.println(result2);
         String prompt3 = "클라우드 엔지니어가 되는 방법을 상세히 알려줘";
         String result3 = llm.useReasoning(prompt3);
         System.out.println(result3);

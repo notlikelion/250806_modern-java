@@ -62,7 +62,7 @@ public class Groq extends LLM {
 //        return body;
     }
 
-    private String useGroq(String url, String prompt, String model, String template) {
+    private byte[] useGroqAudio(String url, String prompt, String model, String template) {
         // request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url)) // URI 타입으로 변환
@@ -78,9 +78,9 @@ public class Groq extends LLM {
         // response
         String body = null; // 초기화를 안하면 뒤에서 쓰기 곤란.
         try {
-            HttpResponse<String> response = client.send(
+            HttpResponse<byte[]> response = client.send(
                     request,
-                    HttpResponse.BodyHandlers.ofString()
+                    HttpResponse.BodyHandlers.ofByteArray()
             );
             // String body = response.body(); // block 때문에...
             return response.body();
@@ -129,8 +129,8 @@ public class Groq extends LLM {
     private final String groqSpeechURL = "https://api.groq.com/openai/v1/audio/speech";
 
     @Override
-    public String changeTextToSpeech(String prompt) {
-        String result = useGroq(groqSpeechURL, prompt, "playai-tts", """
+    public byte[] changeTextToSpeech(String prompt) {
+        byte[] result = useGroqAudio(groqSpeechURL, prompt, "playai-tts", """
                 {
                          "input": "%s",
                          "model": "%s",
