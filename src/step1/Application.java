@@ -4,6 +4,7 @@ package step1;
 import step1.llm.Groq;
 import step1.llm.LLM;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,6 +50,14 @@ public class Application {
 //        System.out.println(result2);
         String prompt3 = "클라우드 엔지니어가 되는 방법을 상세히 알려줘";
         String result3 = llm.useReasoning(prompt3, "openai/gpt-oss-120b");
-        System.out.println(result3);
+//        System.out.println(result3);
+        try {
+            Path filename = Paths.get("%s.md".formatted(System.currentTimeMillis()));
+            Files.writeString(
+                    filename,
+                    result3.replace("\\n", "\n"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
