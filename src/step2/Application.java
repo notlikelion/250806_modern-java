@@ -49,38 +49,54 @@ public class Application {
 //                tem,
 //                "내일 아침 메뉴 추천 좀")).content(); // 모델명도 넣을 수 있다.
 //        System.out.println(result2);
-//        String tem2 = """
-//                {
-//                         "input": "%s",
-//                         "model": "%s",
-//                         "voice": "%s-PlayAI",
-//                         "response_format": "wav"
-//                }
-//                """;
-//        String result3 = llm.textToSpeech(
-//                new TextToSpeechParam(
-//                        AIModel.PLAYAI,
-//                        tem2,
-//                        "I love kimchi. Do you love kimchi?",
-//                        AIVoice.Cheyenne
-//                )
-//        ).content();
-//        System.out.println(result3);
-//        ReasoningResult reasoningResult = llm.reasoning(
-//                new ReasoningParam(
-//                        AIModel.GPT,
-//                        tem,
-//                        "AWS에서 가장 중요한 것들"
-//                        ));
-//        System.out.println(reasoningResult.thinking());
-////        System.out.println(reasoningResult.content());
-//        try {
-//            Path filename = Paths.get("%s.md".formatted(System.currentTimeMillis()));
-//            Files.writeString(
-//                    filename,
-//                    reasoningResult.content().replace("\\n", "\n"));
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+        String tem2 = """
+            {
+                "contents": [
+                  {
+                    "role": "user",
+                    "parts": [
+                      {
+                        "text": "%s"
+                      },
+                    ]
+                  },
+                ],
+                "generationConfig": {
+                  "responseModalities": ["audio", ],
+                  "speech_config": {
+                    "voice_config": {
+                      "prebuilt_voice_config": {
+                        "voice_name": "Zephyr"
+                      }
+                    }
+                  },
+                }
+            }
+            """;
+        String result2 = llm.textToSpeech(
+                new TextToSpeechParam(
+                        AIModel.GEMINI_FLASH_TTS,
+                        tem2,
+                        "오늘 서울은 하루 종일 흐림",
+                        null
+                )
+        ).content();
+        System.out.println(result2);
+        ReasoningResult reasoningResult = llm.reasoning(
+                new ReasoningParam(
+                        AIModel.GEMINI_PRO,
+                        tem,
+                        "AWS에서 가장 중요한 것들"
+                        ));
+        System.out.println(reasoningResult.thinking());
+//        System.out.println(reasoningResult.content());
+        try {
+            Path filename = Paths.get("%s.md".formatted(System.currentTimeMillis()));
+            Files.writeString(
+                    filename,
+                    reasoningResult.content().replace("\\n", "\n"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
