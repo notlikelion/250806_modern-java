@@ -1,0 +1,6 @@
+package step1.llm;
+
+// 인터페이스를 구현하려면...
+// abstract -> 이 추상클래스를 상속(extends)한 클래스한테 interface 전달받은 내용 구현 ...
+public abstract class LLM implements ILLM {
+}
