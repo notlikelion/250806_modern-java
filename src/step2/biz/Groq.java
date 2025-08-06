@@ -23,6 +23,9 @@ public class Groq implements LLM {
             case MAVERICK:
                 modelName = "meta-llama/llama-4-maverick-17b-128e-instruct";
                 break;
+            case VERSATILE:
+                modelName = "llama-3.3-70b-versatile";
+                break;
         }
         String GROQ_API_KEY = System.getenv("GROQ_API_KEY");
         HttpRequest request = HttpRequest.newBuilder()

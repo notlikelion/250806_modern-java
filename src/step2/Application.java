@@ -9,9 +9,7 @@ public class Application {
     public static void main(String[] args) {
         LLM llm = new Groq();
 //        llm.textGeneration(new TextGenerationParam("내일 아침 메뉴 추천 좀"));
-        String result = llm.textGeneration(new TextGenerationParam(
-                AIModel.KIMI,
-                """
+        String tem = """
                 {
                         "messages": [
                             {
@@ -21,8 +19,16 @@ public class Application {
                      ],
                     "model": "%s"
                 }
-                """,
+                """;
+        String result = llm.textGeneration(new TextGenerationParam(
+                AIModel.KIMI,
+                tem,
                 "내일 아침 메뉴 추천 좀")).content(); // 모델명도 넣을 수 있다.
         System.out.println(result);
+        String result2 = llm.textGeneration(new TextGenerationParam(
+                AIModel.VERSATILE,
+                tem,
+                "내일 아침 메뉴 추천 좀")).content(); // 모델명도 넣을 수 있다.
+        System.out.println(result2);
     }
 }
