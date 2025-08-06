@@ -62,6 +62,37 @@ public class Groq extends LLM {
 //        return body;
     }
 
+    private String useGroq(String url, String prompt, String model, String template) {
+        // request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url)) // URI 타입으로 변환
+                .headers("Content-Type", "application/json",
+                        // 구글은 x-googl-api-key?
+                        "Authorization", "Bearer %s".formatted(GROQ_API_KEY)
+                        // JWT 인증방법과 연관
+                )
+                .POST(HttpRequest.BodyPublishers.ofString(
+                        template.formatted(prompt, model)
+                )) // POST 요청을 넣기 위해선 'body'
+                .build();
+        // response
+        String body = null; // 초기화를 안하면 뒤에서 쓰기 곤란.
+        try {
+            HttpResponse<String> response = client.send(
+                    request,
+                    HttpResponse.BodyHandlers.ofString()
+            );
+            // String body = response.body(); // block 때문에...
+            return response.body();
+            // body = response.body();
+            // 1번 : 그냥 여기 안에서 body를 써서 return...
+            // 2번 : 이 친구를 처리한 다음...
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+//        return body;
+    }
+
     final private String groqChatURL = "https://api.groq.com/openai/v1/chat/completions";
 
     @Override
@@ -95,9 +126,19 @@ public class Groq extends LLM {
         return result;
     }
 
+    private final String groqSpeechURL = "https://api.groq.com/openai/v1/audio/speech";
+
     @Override
     public String changeTextToSpeech(String prompt) {
-        return "";
+        String result = useGroq(groqSpeechURL, prompt, "playai-tts", """
+                {
+                         "input": "%s",
+                         "model": "%s",
+                         "voice": "Aaliyah-PlayAI",
+                         "response_format": "wav"
+                }
+                """); // formatted -> %s1 => prompt, %s2 => model.
+        return result;
     }
 
     @Override
