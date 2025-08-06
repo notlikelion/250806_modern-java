@@ -2,10 +2,7 @@ package step2;
 
 import step2.biz.Groq;
 import step2.biz.LLM;
-import step2.data.AIModel;
-import step2.data.AIVoice;
-import step2.data.TextGenerationParam;
-import step2.data.TextToSpeechParam;
+import step2.data.*;
 
 public class Application {
     public static void main(String[] args) {
@@ -44,10 +41,18 @@ public class Application {
                 new TextToSpeechParam(
                         AIModel.PLAYAI,
                         tem2,
-                        "I think I'm drowning.",
-                        AIVoice.Fritz
+                        "I love kimchi. Do you love kimchi?",
+                        AIVoice.Cheyenne
                 )
         ).content();
         System.out.println(result3);
+        ReasoningResult reasoningResult = llm.reasoning(
+                new ReasoningParam(
+                        AIModel.GPT,
+                        tem,
+                        "AWS에서 가장 중요한 것들"
+                        ));
+        System.out.println(reasoningResult.thinking());
+        System.out.println(reasoningResult.content());
     }
 }

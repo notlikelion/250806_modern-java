@@ -1,9 +1,6 @@
 package step2.biz;
 
-import step2.data.TextGenerationParam;
-import step2.data.TextGenerationResult;
-import step2.data.TextToSpeechParam;
-import step2.data.TextToSpeechResult;
+import step2.data.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -111,6 +108,57 @@ public class Groq implements LLM {
             return new TextToSpeechResult(
                     filename,
                     param.prompt()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ReasoningResult reasoning(ReasoningParam param) {
+        String modelName = "";
+        switch (param.model()) {
+            // 가지고 있는 enum을 기준으로 switch할 수 있게 해줌.
+            case GPT:
+                modelName = "openai/gpt-oss-120b";
+                break;
+            case QWEN:
+                modelName = "qwen/qwen3-32b";
+                break;
+            case DEEPSEEK:
+                modelName = "deepseek-r1-distill-llama-70b";
+                break;
+            default:
+                throw new RuntimeException("지원하지 않는 모델");
+        }
+        String GROQ_API_KEY = System.getenv("GROQ_API_KEY");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.groq.com//openai/v1/chat/completions"))
+                .headers("Content-Type", "application/json",
+                        "Authorization", "Bearer %s".formatted(GROQ_API_KEY)
+                )
+                .POST(HttpRequest.BodyPublishers.ofString(
+                        param.template().formatted(param.prompt(),
+                                modelName)
+                )) // POST 요청을 넣기 위해선 'body'
+                .build();
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpResponse<String> response = client.send(
+                    request,
+                    HttpResponse.BodyHandlers.ofString()
+            );
+            String body = response.body(); // block 때문에...
+            System.out.println(body);
+            String[] tmp = body
+                    .split("\"content\":\"")[1]
+                    .split(",\"reasoning\"");
+            String content = tmp[0].trim();
+            String thinking = tmp[1].split("\"}")[0].trim();
+            return new ReasoningResult(
+                    content,
+                    param.prompt(),
+                    thinking
             );
         } catch (Exception e) {
             throw new RuntimeException(e);
