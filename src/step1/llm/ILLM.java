@@ -8,5 +8,5 @@ public interface ILLM {
     /// Text to Speech : https://console.groq.com/docs/text-to-speech
     byte[] changeTextToSpeech(String prompt);
     ///  Reasoning : https://console.groq.com/docs/reasoning
-    String useReasoning(String prompt);
+    String useReasoning(String prompt, String model);
 }

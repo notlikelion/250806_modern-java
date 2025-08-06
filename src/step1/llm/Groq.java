@@ -142,7 +142,10 @@ public class Groq extends LLM {
     }
 
     @Override
-    public String useReasoning(String prompt) {
-        return "";
+    public String useReasoning(String prompt, String model) {
+        return useGroq(groqChatURL, prompt, model)
+                .split("\"content\":\"")[1]
+                .split(",\"reasoning\"")[0]
+                .trim();
     }
 }
