@@ -24,8 +24,10 @@ public class Application {
         List<String> menus = List.of("한식", "중식", "양식", "일식");
             menus.stream()
                     .parallel()
-                    .map(x -> llm.generateText("%s 하나를 추천 받는 프롬프트를 작성해줘.".formatted(x), "moonshotai/kimi-k2-instruct"))
-                    .map(x -> llm.generateText("%s. 결과만 작성하고, 꾸미는 문법 없이 100글자 이내의 추천 메뉴와 추천 이유만 작성.".formatted(x),
+                    .map(x -> "%s 하나를 추천 받는 프롬프트를 작성해줘.".formatted(x))
+                    .map(x -> llm.generateText(x, "moonshotai/kimi-k2-instruct"))
+                    .map(x -> "%s. 결과만 작성하고, 꾸미는 문법 없이 100글자 이내의 추천 메뉴와 추천 이유만 작성.".formatted(x))
+                    .map(x -> llm.generateText(x,
                             "meta-llama/llama-4-maverick-17b-128e-instruct"))
                     .forEach(System.out::println);
 
