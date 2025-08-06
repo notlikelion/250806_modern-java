@@ -4,8 +4,11 @@ package step2.data;
 public enum AIModel {
     // Chat
     KIMI, MAVERICK, VERSATILE,
+    GEMINI_FLASH,
     // TTS
     PLAYAI,
+    GEMINI_FLASH_TTS,
     // Reasoning
     QWEN, GPT, DEEPSEEK,
+    GEMINI_PRO
 }
