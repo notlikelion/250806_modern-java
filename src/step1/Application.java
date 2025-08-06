@@ -9,7 +9,8 @@ public class Application {
         LLM llm = new Groq();
 //        LLM llm = new Gemini();
         // 똑같이 실행이 될까요?
-        String prompt1 = "저녁 메뉴 추천해줘";
+//        String prompt1 = "저녁 메뉴 추천해줘";
+        String prompt1 = "저녁 메뉴 추천해줘. 100자 이내로. 한식과 양식, 일식, 중식 중에서. 시켜먹거나 사먹는 걸로. 결과만 작성해주고, 꾸미는 문법은 쓰지 말아줘.";
         String result1 = llm.generateText(prompt1);
         System.out.println(result1);
         String prompt2 = "Hello World!";

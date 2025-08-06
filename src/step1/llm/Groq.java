@@ -21,9 +21,7 @@ public class Groq extends LLM {
     // 반복해서 쓸 수 있는 친구
     // 온갖 메서드에서 계속 쓸 것.
 
-    @Override
-    public String generateText(String prompt) {
-        String url = "https://api.groq.com/openai/v1/chat/completions";
+    private String useGroq(String url, String prompt, String model) {
         // request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url)) // URI 타입으로 변환
@@ -31,19 +29,19 @@ public class Groq extends LLM {
                         // 구글은 x-googl-api-key?
                         "Authorization", "Bearer %s".formatted(GROQ_API_KEY)
                         // JWT 인증방법과 연관
-                        )
+                )
                 .POST(HttpRequest.BodyPublishers.ofString(
-                 """
-                     {
-                             "messages": [
-                             {
-                                 "role": "user",
-                                 "content": "%s"
-                             }
-                              ],
-                             "model": "moonshotai/kimi-k2-instruct"
-                     }
-                     """.formatted(prompt)
+                        """
+                            {
+                                    "messages": [
+                                    {
+                                        "role": "user",
+                                        "content": "%s"
+                                    }
+                                     ],
+                                    "model": "%s"
+                            }
+                            """.formatted(prompt, model)
                 )) // POST 요청을 넣기 위해선 'body'
                 .build();
         // response
@@ -54,14 +52,25 @@ public class Groq extends LLM {
                     HttpResponse.BodyHandlers.ofString()
             );
             // String body = response.body(); // block 때문에...
-            body = response.body();
+            return response.body();
+            // body = response.body();
             // 1번 : 그냥 여기 안에서 body를 써서 return...
             // 2번 : 이 친구를 처리한 다음...
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+//        return body;
+    }
+
+    @Override
+    public String generateText(String prompt) {
+        String url = "https://api.groq.com/openai/v1/chat/completions";
+
         // -> body(POST)를 추출
-        String result = body
+        String result = useGroq(
+                url,
+                prompt,
+                "moonshotai/kimi-k2-instruct")
                 // 정규표현식...
                 // "content":
                 // "},
