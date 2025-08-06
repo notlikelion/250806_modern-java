@@ -49,6 +49,7 @@ public class Application {
 //                tem,
 //                "내일 아침 메뉴 추천 좀")).content(); // 모델명도 넣을 수 있다.
 //        System.out.println(result2);
+        // https://ai.google.dev/gemini-api/docs/speech-generation?hl=ko#voices
         String tem2 = """
             {
                 "contents": [
@@ -66,7 +67,7 @@ public class Application {
                   "speech_config": {
                     "voice_config": {
                       "prebuilt_voice_config": {
-                        "voice_name": "Zephyr"
+                        "voice_name": "%s"
                       }
                     }
                   },
@@ -77,8 +78,8 @@ public class Application {
                 new TextToSpeechParam(
                         AIModel.GEMINI_FLASH_TTS,
                         tem2,
-                        "오늘 서울은 하루 종일 흐림",
-                        null
+                        "이건 첫 번째 레슨 좋은 건 너만 알기",
+                        AIVoice.achernar
                 )
         ).content();
         System.out.println(result2);

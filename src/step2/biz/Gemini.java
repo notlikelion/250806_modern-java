@@ -81,7 +81,7 @@ public class Gemini implements LLM {
                 .POST(HttpRequest.BodyPublishers.ofString(
                         param.template().formatted(
                                 param.prompt(),
-                                modelName
+                                param.voice().name()
                         ))) // POST 요청을 넣기 위해선 'body'
                 .build();
         HttpClient client = HttpClient.newHttpClient();
