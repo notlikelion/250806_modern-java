@@ -16,6 +16,8 @@ public class Application {
         System.out.println("kimi : %s".formatted(kimi));
         String maverick = llm.generateText(prompt1, "meta-llama/llama-4-maverick-17b-128e-instruct"); // llama-4-maverick
         System.out.println("maverick : %s".formatted(maverick));
+        String scout = llm.generateText(prompt1, "meta-llama/llama-4-scout-17b-16e-instruct"); // llama-4-scout
+        System.out.println("scout : %s".formatted(scout));
         String prompt2 = "Hello World!";
         String result2 = llm.changeTextToSpeech(prompt2);
         System.out.println(result2);
